@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && xcopy /E /I /Y indiamart-clone\\dist dist\\indiamart-clone && xcopy /E /I /Y antigravity-fitness\\dist dist\\antigravity-fitness",
     "lint": "eslint .",
     "preview": "vite preview"
   },
