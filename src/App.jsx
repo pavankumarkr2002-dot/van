@@ -5,13 +5,10 @@ import Footer from "./components/Footer";
 
 // Pages
 import Home from "./pages/Home";
-import AboutUs from "./pages/AboutUs";
 import Products from "./pages/Products";
-import Bakery from "./pages/Bakery";
-import BeveragesIceCreams from "./pages/BeveragesIceCreams";
-import HoReCa from "./pages/HoReCa";
-import ContractManufacturing from "./pages/ContractManufacturing";
-import ContactUs from "./pages/ContactUs";
+import ProductDetail from "./pages/ProductDetail";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 
 import "./App.css";
 
@@ -20,16 +17,13 @@ export default function App() {
     <Router>
       <ScrollToTop />
       <Header />
-      <main className="main-content">
+      <main className="im-main-content">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/bakery" element={<Bakery />} />
-          <Route path="/beverages-and-ice-creams" element={<BeveragesIceCreams />} />
-          <Route path="/horeca" element={<HoReCa />} />
-          <Route path="/contract-manufacturing" element={<ContractManufacturing />} />
-          <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<Home />} /> {/* Fallback route */}
         </Routes>
       </main>

@@ -1,141 +1,172 @@
-import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Search, ChevronDown, User, FileText, Store, Menu, X } from "lucide-react";
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-    setIsDropdownOpen(false);
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    navigate("/products", { 
+      state: { 
+        search: searchQuery, 
+        category: selectedCategory !== "All Categories" ? selectedCategory : "All" 
+      } 
+    });
   };
 
+  const handleTrendingClick = (term) => {
+    setSearchQuery(term);
+    navigate("/products", { state: { search: term, category: "All" } });
+  };
+
+  const categories = ["All Categories", "Bakery", "Beverages", "Ice Cream", "HoReCa", "Contract Mfg"];
+
   return (
-    <header className={`site-header ${isSticky ? "sticky" : ""}`}>
-      <div className="container header-container">
-        <Link to="/" className="logo-container" onClick={closeMenu}>
-          <img 
-            src="./images/logo.png" 
-            alt="Vintop Logo" 
-            className="logo-img"
-          />
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="desktop-nav">
-          <NavLink to="/" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Home
-          </NavLink>
-          
-          <NavLink to="/about-us" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            About Us
-          </NavLink>
-
-          {/* Products Dropdown */}
-          <div 
-            className="dropdown-wrapper"
-            onMouseEnter={() => setIsDropdownOpen(true)}
-            onMouseLeave={() => setIsDropdownOpen(false)}
-          >
-            <NavLink 
-              to="/products" 
-              className={({ isActive }) => `nav-link dropdown-toggle ${isActive ? "active" : ""}`}
-              onClick={(e) => {
-                // Toggle dropdown on mobile/tablet if clicked directly, but allow navigation on desktop
-                if (window.innerWidth <= 1024) {
-                  e.preventDefault();
-                  setIsDropdownOpen(!isDropdownOpen);
-                }
-              }}
-            >
-              Products <ChevronDown size={14} className={`dropdown-icon ${isDropdownOpen ? "open" : ""}`} />
-            </NavLink>
-
-            <div className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
-              <Link to="/bakery" className="dropdown-item" onClick={closeMenu}>
-                Bakery
-              </Link>
-              <Link to="/beverages-and-ice-creams" className="dropdown-item" onClick={closeMenu}>
-                Beverages & Ice Creams
-              </Link>
-              <Link to="/horeca" className="dropdown-item" onClick={closeMenu}>
-                HoReCa
-              </Link>
-            </div>
+    <header className="im-header">
+      {/* ROW 1: Utility Bar */}
+      <div className="im-utility-bar">
+        <div className="container utility-container">
+          <div className="utility-left">
+            <span className="utility-link">For Buyers</span>
+            <span className="utility-divider">|</span>
+            <span className="utility-link">For Suppliers</span>
+            <span className="utility-divider">|</span>
+            <span className="utility-link">Help Center</span>
           </div>
-
-          <NavLink to="/contract-manufacturing" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Contract Manufacturing
-          </NavLink>
-
-          <NavLink to="/contact-us" className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}>
-            Contact Us
-          </NavLink>
-        </nav>
-
-        {/* Mobile Hamburger Button */}
-        <button className="mobile-toggle" onClick={toggleMenu} aria-label="Toggle navigation">
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-
-        {/* Mobile Navigation Drawer */}
-        <nav className={`mobile-nav ${isMenuOpen ? "open" : ""}`}>
-          <NavLink to="/" className={({ isActive }) => `mobile-nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
-            Home
-          </NavLink>
-          
-          <NavLink to="/about-us" className={({ isActive }) => `mobile-nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
-            About Us
-          </NavLink>
-
-          {/* Mobile Products Sub-menu */}
-          <div className="mobile-dropdown-wrapper">
-            <button 
-              className="mobile-nav-link mobile-dropdown-toggle"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            >
-              Products <ChevronDown size={16} className={`dropdown-icon ${isDropdownOpen ? "open" : ""}`} />
-            </button>
-            <div className={`mobile-dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
-              <Link to="/products" className="mobile-dropdown-item" onClick={closeMenu}>
-                All Products
-              </Link>
-              <Link to="/bakery" className="mobile-dropdown-item" onClick={closeMenu}>
-                Bakery Products
-              </Link>
-              <Link to="/beverages-and-ice-creams" className="mobile-dropdown-item" onClick={closeMenu}>
-                Beverages & Ice Creams
-              </Link>
-              <Link to="/horeca" className="mobile-dropdown-item" onClick={closeMenu}>
-                HoReCa Products
-              </Link>
-            </div>
+          <div className="utility-right">
+            <span className="utility-link highlight">Download App</span>
+            <span className="utility-divider">|</span>
+            <span className="utility-link">Login</span>
+            <span className="utility-divider">|</span>
+            <span className="utility-link">Register Free</span>
           </div>
-
-          <NavLink to="/contract-manufacturing" className={({ isActive }) => `mobile-nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
-            Contract Manufacturing
-          </NavLink>
-
-          <NavLink to="/contact-us" className={({ isActive }) => `mobile-nav-link ${isActive ? "active" : ""}`} onClick={closeMenu}>
-            Contact Us
-          </NavLink>
-        </nav>
+        </div>
       </div>
+
+      {/* ROW 2: Main Navbar */}
+      <div className="im-main-navbar">
+        <div className="container navbar-container">
+          {/* Brand Logo */}
+          <div className="navbar-logo-area">
+            <Link to="/" className="navbar-logo-link">
+              <img 
+                src={window.location.protocol === 'file:' ? './images/logo.png' : '/images/logo.png'} 
+                alt="Vintop Products" 
+                className="navbar-logo-img" 
+              />
+              <span className="logo-tagline">India's Food Ingredients Marketplace</span>
+            </Link>
+          </div>
+
+          {/* Search Bar */}
+          <div className="navbar-search-section">
+            <form onSubmit={handleSearchSubmit} className="search-bar-form">
+              <div className="search-category-dropdown">
+                <span>{selectedCategory}</span>
+                <ChevronDown size={14} />
+                <select 
+                  value={selectedCategory} 
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="search-category-select-hidden"
+                >
+                  {categories.map((cat, idx) => (
+                    <option key={idx} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+              <input
+                type="text"
+                placeholder="Search for Bread Improver, Cake Premix, Ice Cream Mix..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="search-input-field"
+              />
+              <button type="submit" className="search-submit-btn">
+                <Search size={18} />
+                <span>Search</span>
+              </button>
+            </form>
+
+            {/* Trending Tags */}
+            <div className="search-trending-tags">
+              <span>Trending:</span>
+              <button onClick={() => handleTrendingClick("Bread Improver")}>Bread Improver</button>
+              <span className="tag-dot">•</span>
+              <button onClick={() => handleTrendingClick("Cake Premix")}>Cake Premix</button>
+              <span className="tag-dot">•</span>
+              <button onClick={() => handleTrendingClick("Softy Ice Cream Mix")}>Softy Ice Cream Mix</button>
+              <span className="tag-dot">•</span>
+              <button onClick={() => handleTrendingClick("Custard Powder")}>Custard Powder</button>
+              <span className="tag-dot">•</span>
+              <button onClick={() => handleTrendingClick("Rose Milk Powder")}>Rose Milk Powder</button>
+            </div>
+          </div>
+
+          {/* B2B Action Buttons */}
+          <div className="navbar-actions-section">
+            <Link to="/contact" className="im-btn im-btn-orange-outline">
+              <FileText size={16} />
+              <span>Post Requirement</span>
+            </Link>
+            <Link to="/contact" className="im-btn im-btn-teal">
+              <Store size={16} />
+              <span>List Your Products</span>
+            </Link>
+            <div className="my-account-trigger">
+              <User size={18} className="account-icon" />
+              <span>My Account</span>
+              <ChevronDown size={12} />
+            </div>
+            
+            <button className="mobile-menu-toggle-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ROW 3: Categories Strip */}
+      <div className="im-categories-strip">
+        <div className="container strip-container">
+          <nav className="strip-nav-links">
+            <Link to="/products" state={{ category: "Bakery" }}>Bakery Products</Link>
+            <Link to="/products" state={{ category: "Beverages" }}>Beverages</Link>
+            <Link to="/products" state={{ category: "Ice Cream" }}>Ice Cream Range</Link>
+            <Link to="/products" state={{ category: "HoReCa" }}>HoReCa & Savouries</Link>
+            <Link to="/products" state={{ category: "Contract Mfg" }}>Contract Manufacturing</Link>
+            <Link to="/products" state={{ category: "All" }}>New Launches</Link>
+            <Link to="/contact">Bulk Orders</Link>
+            <Link to="/about">About Us</Link>
+          </nav>
+        </div>
+      </div>
+
+      {/* Mobile Drawer Navigation */}
+      {isMobileMenuOpen && (
+        <div className="im-mobile-menu-overlay" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="im-mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
+            <div className="drawer-header">
+              <span className="drawer-logo">Vintop Products</span>
+              <button className="drawer-close-btn" onClick={() => setIsMobileMenuOpen(false)}>
+                <X size={20} />
+              </button>
+            </div>
+            <div className="drawer-links">
+              <Link to="/products" state={{ category: "Bakery" }} onClick={() => setIsMobileMenuOpen(false)}>Bakery Products</Link>
+              <Link to="/products" state={{ category: "Beverages" }} onClick={() => setIsMobileMenuOpen(false)}>Beverages & Soft Drinks</Link>
+              <Link to="/products" state={{ category: "Ice Cream" }} onClick={() => setIsMobileMenuOpen(false)}>Ice Cream Products</Link>
+              <Link to="/products" state={{ category: "HoReCa" }} onClick={() => setIsMobileMenuOpen(false)}>HoReCa Solutions</Link>
+              <Link to="/products" state={{ category: "Contract Mfg" }} onClick={() => setIsMobileMenuOpen(false)}>Contract Manufacturing</Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)}>About Us</Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)}>Contact Us / Post Requirement</Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

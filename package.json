@@ -1,11 +1,11 @@
 {
-  "name": "new-wshws",
+  "name": "indiamart-clone",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && xcopy /E /I /Y indiamart-clone\\dist dist\\indiamart-clone && xcopy /E /I /Y antigravity-fitness\\dist dist\\antigravity-fitness",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
