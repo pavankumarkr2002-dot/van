@@ -2713,19 +2713,35 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .im-main-navbar {
-    height: 70px;
+    height: auto;
+    padding: 12px 0;
   }
   
-  .navbar-logo-area .logo-brand {
-    font-size: 20px;
+  .navbar-container {
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+  }
+  
+  .navbar-logo-area {
+    order: 1;
+    flex-grow: 1;
   }
   
   .navbar-logo-area .logo-tagline {
     display: none;
   }
   
+  .navbar-actions-section {
+    order: 2;
+    gap: 0.5rem;
+  }
+  
   .navbar-search-section {
-    max-width: 250px;
+    order: 3;
+    width: 100%;
+    max-width: 100% !important;
+    margin-top: 4px;
   }
   
   .search-category-dropdown {
@@ -2841,6 +2857,40 @@ h1, h2, h3, h4, h5, h6 {
     flex-direction: column;
     gap: 0.5rem;
     text-align: center;
+  }
+
+  /* Responsive Slide Stacking */
+  .hero-slide-item {
+    flex-direction: column-reverse;
+    text-align: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem 1.5rem;
+  }
+
+  .slide-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .slide-image-box {
+    width: 100%;
+    max-width: 250px;
+    height: 120px;
+  }
+
+  /* Detail Tabs mobile horizontal scrolling */
+  .detail-tabs-header {
+    overflow-x: auto;
+    white-space: nowrap;
+    display: flex;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-link {
+    flex-shrink: 0;
+    padding: 0.75rem 1.25rem;
   }
 }
 
